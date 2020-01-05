@@ -2,7 +2,7 @@
 
 This tool aims for monitoring nodes and agent versions in the IPFS network.
 
-[Here you can check]](http://tagen.tv:5000) the IPFS Monitor in action.
+[Here you can check](http://tagen.tv:5000) the IPFS Monitor in action.
 
 
 ## Requirements

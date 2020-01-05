@@ -15,6 +15,8 @@ def index():
         'index.html',
         series=reporter.series,
         data_samples=len(reporter.data_samples),
+        last_agents=reporter.latest_agents,
+        last_update=reporter.last_update,
     )
 
 

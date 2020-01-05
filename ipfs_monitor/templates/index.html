@@ -4,13 +4,48 @@
   <meta charset="utf-8">
   <title>IPFS monitor</title>
   <meta name="description" content="Monitoring nodes and used agent versions in the IPFS network.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/css/uikit.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
-  <h1>IPFS Monitor</h1>
-  <p>Monitoring nodes and used agent versions in the IPFS network.</p>
-  <div id="chart"></div>
-  <p>Generated from {{ data_samples }} data samples.</p>
+  <div class="uk-section">
+      <div class="uk-container">
+        <h1 class="uk-heading-medium">IPFS Monitor</h1>
+        <p>This tool aims for monitoring nodes and agent versions in the IPFS network. All the information here are generated using IPFS node located in Wrocław, Poland which is running on go-ipfs v0.4.22.</p>
+        <p>Check the source code at <a href="https://github.com/trojkat/ipfs-monitor">https://github.com/trojkat/ipfs-monitor</a>.</p>
+      </div>
+  </div>
+
+  <div class="uk-section">
+    <div class="uk-container">
+      <h3>Number of available nodes by agent main version</h3>
+      <div id="chart"></div>
+      <p>Generated from {{ data_samples }} data samples.</p>
+    </div>
+  </div>
+
+  <div class="uk-section">
+    <div class="uk-container">
+      <h3>List of agent versions from the last data sample ({{ last_update }} UTC)</h3>
+      <table class="uk-table uk-table-small uk-table-divider uk-table-hover">
+        <thead>
+          <tr>
+            <th>Agent version</th>
+            <th>Number of nodes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for agent, nodes_counter in last_agents.items() %}
+          <tr>
+            <td>{{ agent }}</td>
+            <td>{{ nodes_counter }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <script>
       var options = {
         series: [
@@ -31,14 +66,8 @@
         chart: {
           type: 'area',
           height: 700,
-          stacked: true,
-          events: {
-            selection: function (chart, e) {
-              console.log(new Date(e.xaxis.min))
-            }
-          },
+          stacked: true
         },
-        // colors: ['#008FFB', '#00E396', '#CED4DC'],
         dataLabels: {
           enabled: false
         },

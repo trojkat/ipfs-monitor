@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  monitor:
+    build: .
+    container_name: monitor
+    network_mode: "host"
+    image: trojkat/ipfs-monitor:latest
+    restart: always
+    command: python ipfs_monitor/app.py
+    ports:
+      - "5000:5000"
+    volumes:
+    - ./reports:/code/reports

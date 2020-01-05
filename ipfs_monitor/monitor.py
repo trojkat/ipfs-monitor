@@ -1,5 +1,7 @@
 from collections import defaultdict
-from typing import Dict, List
+from datetime import datetime
+import json
+from typing import Dict, List, Optional
 
 import ipfshttpclient
 
@@ -21,7 +23,7 @@ class IpfsMonitor:
         for index, peer in enumerate(self.peers):
             print(f'Scaning peer {index + 1}/{peers_to_scan}')
             try:
-                details = self._client.id(peer=peer, timeout=5)
+                details = self._client.id(peer=peer, timeout=2)
             except ipfshttpclient.exceptions.TimeoutError:
                 print('Timeout')
                 continue
@@ -30,3 +32,24 @@ class IpfsMonitor:
 
     def sort_agents(self):
         self.agents = {k: v for k, v in sorted(self.agents.items(), key=lambda item: item[1], reverse=True)}
+
+    def save_report(self, filename: Optional[str] = None):
+        date_str = datetime.utcnow().isoformat()[:19]
+        data = {
+            'date': date_str,
+            'agents': self.agents,
+            'protocols': self.protocols,
+        }
+        json_str = json.dumps(data, indent=2)
+        if not filename:
+            filename = f'reports/{date_str}'
+        with open(f'{filename}.json', 'w') as output_file:
+            output_file.write(json_str)
+
+
+if __name__ == '__main__':
+    monitor = IpfsMonitor()
+    monitor.get_active_peers()
+    monitor.scan_peers()
+    monitor.sort_agents()
+    monitor.save_report()

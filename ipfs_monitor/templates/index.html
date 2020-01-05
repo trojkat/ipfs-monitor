@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>IPFS monitor</title>
+  <meta name="description" content="Monitoring nodes and used agent versions in the IPFS network.">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+  <h1>IPFS Monitor</h1>
+  <p>Monitoring nodes and used agent versions in the IPFS network.</p>
+  <div id="chart"></div>
+  <p>Generated from {{ data_samples }} data samples.</p>
+  <script>
+      var options = {
+        series: [
+        {% for agent, data_list in series.items() %}
+          {
+            name: '{{ agent }}',
+            data: [
+            {% for date, nodes_counter in data_list %}
+            	{
+                x: '{{ date }}',
+                y: {{ nodes_counter }}
+              }{% if not loop.last %},{% endif %}
+            {% endfor %}
+            ]
+          }{% if not loop.last %},{% endif %}
+        {% endfor %}
+        ],
+        chart: {
+          type: 'area',
+          height: 700,
+          stacked: true,
+          events: {
+            selection: function (chart, e) {
+              console.log(new Date(e.xaxis.min))
+            }
+          },
+        },
+        // colors: ['#008FFB', '#00E396', '#CED4DC'],
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            opacityFrom: 0.6,
+            opacityTo: 0.8,
+          }
+        },
+        legend: {
+          show: false
+        },
+        xaxis: {
+          type: 'datetime'
+        },
+      };
+
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render();
+  </script>
+</body>
+</html>

@@ -19,7 +19,9 @@ class Reporter:
         if not name:
             return 'unknown'
         if name.startswith('go-ipfs') or name.startswith('/go-ipfs'):
-            name, version, _ = name.lstrip('/').split('/')
+            name_parts = name.lstrip('/').split('/')
+            name = name_parts[0]
+            version = name_parts[1]
             major, minor, _ = version.split('.')
             return f'{name}/{major}.{minor}.x'
         return 'other'

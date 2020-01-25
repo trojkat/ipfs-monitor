@@ -1,10 +1,9 @@
-from pathlib import Path
-
 from flask import Flask, render_template
 
 import reports
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():

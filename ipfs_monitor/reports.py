@@ -7,7 +7,7 @@ from typing import Dict, List, Tuple
 
 class Reporter:
 
-    def __init__(self, reports_dir: str = 'reports', data_samples_limit: int = 48):
+    def __init__(self, reports_dir: str = 'reports', data_samples_limit: int = 500):
         self.reports_dir = Path() / reports_dir
         self.series: Dict[str, List[Tuple[str, int]]] = defaultdict(list)
         self.data_samples = sorted([f for f in self.reports_dir.glob('*.json')], reverse=True)[:data_samples_limit]

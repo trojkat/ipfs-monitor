@@ -22,7 +22,7 @@ class Reporter:
             name_parts = name.lstrip('/').split('/')
             name = name_parts[0]
             version = name_parts[1]
-            major, minor, _ = version.split('.')
+            major, minor, *_ = version.split('.')
             return f'{name}/{major}.{minor}.x'
         return 'other'
 
